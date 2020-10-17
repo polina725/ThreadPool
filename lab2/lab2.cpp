@@ -8,7 +8,10 @@ DWORD WINAPI ShortFunction(LPVOID lpParam);
 DWORD WINAPI SomeFunction(LPVOID lpParam);
 DWORD WINAPI OldFunction(LPVOID lpParam);
 
-
+/// <summary>
+/// ThreadPool to another thread
+/// </summary>
+/// <returns></returns>
 int main()
 {
     ThreadPool pool(4);
