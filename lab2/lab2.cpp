@@ -8,17 +8,14 @@ DWORD WINAPI ShortFunction(LPVOID lpParam);
 DWORD WINAPI SomeFunction(LPVOID lpParam);
 DWORD WINAPI OldFunction(LPVOID lpParam);
 
-/// <summary>
-/// ThreadPool to another thread
-/// </summary>
-/// <returns></returns>
 int main()
 {
     ThreadPool pool(10,4);
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i < 30; i++) {
         pool.addTaskToQueue(SomeFunction, (LPVOID)i);
-    Sleep(3000);
-  //  pool.~ThreadPool();
+        Sleep(100);
+    }
+   // Sleep(2000);
     return 0;
 }
 

@@ -2,20 +2,23 @@
 
 void Logger::logAction(string eventMessage)
 {
+	EnterCriticalSection(&crSection);
 	if (outputFile.is_open()) {
 		outputFile << GetTime()<<" --- "<<eventMessage;
 	}
+	LeaveCriticalSection(&crSection);
 }
 
 Logger::Logger()
 {
+	InitializeCriticalSectionAndSpinCount(&crSection, 2000);
 	outputFile.open(filePath);
 }
 
 Logger::~Logger()
 {
 	outputFile.close();
-	cout << "kek\n";
+	DeleteCriticalSection(&crSection);
 }
 
 string Logger::GetTime()

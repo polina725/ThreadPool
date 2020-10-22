@@ -10,7 +10,5 @@ class Thread {
 		CRITICAL_SECTION crSection;
 		CONDITION_VARIABLE cnVariable;
 		TaskPair* taskForExecution;
-	private:
-		BOOL isAvailable;
-		BOOL isDead;
+		BOOL alive;
 };

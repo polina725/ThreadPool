@@ -1,8 +1,8 @@
 #pragma once
 #include <windows.h>
 #include <queue>
-#include "TaskPair.h"
 #include "Logger.h"
+#include "TaskPair.h"
 #include "Thread.h"
 
 class ThreadPool {
@@ -13,13 +13,15 @@ class ThreadPool {
 
 	private:
 		int maxCount;
-		volatile int currentWorkingThreadCount;
-		volatile int initializedThraedAmount;
+		volatile LONG currentWorkingThreadCount;
+		volatile int initializedThreadAmount;
 		volatile LONG alive;
+		int startInitValue;
 
-		HANDLE* threadHandles;
-		Logger* logger;
+		Logger logger;
 		HANDLE ManagerThread;
+		volatile LONG managerIsAlive;
+		HANDLE* threadHandles;
 
 		std::queue<Thread*> threadQueue;
 		CRITICAL_SECTION taskQueueCrSection;
@@ -31,4 +33,5 @@ class ThreadPool {
 
 		static DWORD WINAPI threadStart(ThreadPool* lpParam);
 		static DWORD WINAPI startManager(ThreadPool* lpParam);
+		bool allTaskExecuted();
 };
