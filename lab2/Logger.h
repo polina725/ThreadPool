@@ -21,7 +21,7 @@ class Logger {
 		Logger();
 		~Logger();
 	private:
-		const string filePath = "D:\\3course\\5sem\\OSaSP\\lab2\\logger.txt";
+		const string filePath = "..\\logger.txt";
 		ofstream outputFile;
 		CRITICAL_SECTION crSection;
 		string GetTime();

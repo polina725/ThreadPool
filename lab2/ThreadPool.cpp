@@ -112,7 +112,10 @@ DWORD WINAPI ThreadPool::startManager(ThreadPool* pool)
 			SleepConditionVariableCS(&pool->taskQueueCnVariable, &pool->taskQueueCrSection, 2000);
 		if (!pool->alive && pool->taskQueue.empty()) {
 			LeaveCriticalSection(&pool->taskQueueCrSection);
-			while (!pool->allTaskExecuted()) { pool->logger.logAction("uuuuu1 " + std::to_string(GetCurrentThreadId()) + " " + std::to_string(pool->taskQueue.size()) + "\n"); Sleep(4000); }
+			while (!pool->allTaskExecuted()) { 
+				//pool->logger.logAction("uuuuu1 " + std::to_string(GetCurrentThreadId()) + " " + std::to_string(pool->taskQueue.size()) + "\n"); 
+				Sleep(4000); 
+			}
 			InterlockedExchange(&pool->managerIsAlive, FALSE);
 			return 0;
 		}
@@ -130,7 +133,7 @@ DWORD WINAPI ThreadPool::startManager(ThreadPool* pool)
 			pool->threadQueue.front()->taskForExecution = task;
 			WakeConditionVariable(&pool->threadQueue.front()->cnVariable);
 			LeaveCriticalSection(&pool->threadQueueCrSection);
-			pool->logger.logAction("in " + std::to_string((int)task->parameters) + "\n");
+			//pool->logger.logAction("in " + std::to_string((int)task->parameters) + "\n");
 		}
 		else if (pool->initializedThreadAmount < pool->maxCount) {
 			pool->initializedThreadAmount++;
@@ -140,12 +143,15 @@ DWORD WINAPI ThreadPool::startManager(ThreadPool* pool)
 			WakeConditionVariable(&pool->threadQueue.back()->cnVariable);
 			LeaveCriticalSection(&pool->threadQueueCrSection);
 			pool->logger.logAction(NEW_THREAD(GetThreadId(pool->threadHandles[pool->initializedThreadAmount])));
-			pool->logger.logAction("in1 " + std::to_string((int)task->parameters) + "\n");
+		//	pool->logger.logAction("in1 " + std::to_string((int)task->parameters) + "\n");
 		}
 		InterlockedExchange(&pool->currentWorkingThreadCount, pool->currentWorkingThreadCount + 1);
 		
 	}
-	while (!pool->allTaskExecuted()) { pool->logger.logAction("uuuuu " + std::to_string(GetCurrentThreadId()) + " " + std::to_string(pool->taskQueue.size()) + "\n"); Sleep(4000); }
+	while (!pool->allTaskExecuted()) { 
+	//	pool->logger.logAction("uuuuu " + std::to_string(GetCurrentThreadId()) + " " + std::to_string(pool->taskQueue.size()) + "\n"); 
+		Sleep(4000); 
+	}
 	InterlockedExchange(&pool->managerIsAlive, FALSE);
 	return 0;
 }
@@ -172,7 +178,7 @@ ThreadPool::~ThreadPool()
 	WaitForSingleObject(ManagerThread, INFINITE);
 	WakeAllConditionVariable(&threadQueueCnVariable);
 	WakeAllConditionVariable(&taskQueueCnVariable);
-	std::cout << "Working " << currentWorkingThreadCount << std::endl;/////////////
+//	std::cout << "Working " << currentWorkingThreadCount << std::endl;/////////////
 	for (int i = 0; i < threadQueue.size(); i++) {
 		Thread* thread = threadQueue.front();
 		WakeAllConditionVariable(&thread->cnVariable);

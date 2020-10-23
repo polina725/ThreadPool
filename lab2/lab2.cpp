@@ -10,8 +10,9 @@ DWORD WINAPI OldFunction(LPVOID lpParam);
 
 int main()
 {
-    ThreadPool pool(10,4);
-    for (int i = 0; i < 30; i++) {
+    ThreadPool pool(15,10);
+    pool.addTaskToQueue(ShortFunction, NULL);
+    for (int i = 0; i < 5; i++) {
         pool.addTaskToQueue(SomeFunction, (LPVOID)i);
         Sleep(100);
     }
@@ -21,7 +22,7 @@ int main()
 
 DWORD WINAPI ShortFunction(LPVOID lpParam)
 {
-    std::string fName = "D:\\users.xml";
+    std::string fName = "..\\tmp.txt";
     std::ofstream myfile;
     myfile.open(fName);
     myfile << "Writing this to a file.\n";
