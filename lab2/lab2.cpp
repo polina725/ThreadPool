@@ -12,7 +12,7 @@ int main()
 {
     ThreadPool pool(15,10);
     pool.addTaskToQueue(ShortFunction, NULL);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 30; i++) {
         pool.addTaskToQueue(SomeFunction, (LPVOID)i);
         Sleep(100);
     }
